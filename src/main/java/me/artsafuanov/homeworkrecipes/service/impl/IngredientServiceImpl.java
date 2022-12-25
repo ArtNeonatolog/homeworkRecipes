@@ -2,10 +2,12 @@ package me.artsafuanov.homeworkrecipes.service.impl;
 
 import me.artsafuanov.homeworkrecipes.model.Ingredient;
 import me.artsafuanov.homeworkrecipes.service.IngredientService;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.TreeMap;
 
+@Service
 public class IngredientServiceImpl implements IngredientService {
     private static final Map<Integer, Ingredient> mapOfIngredients = new TreeMap<>();
 
@@ -25,7 +27,7 @@ public class IngredientServiceImpl implements IngredientService {
         if (mapOfIngredients.containsKey(ingredientId)) {
             return mapOfIngredients.get(ingredientId);
         } else {
-            throw new RuntimeException("Такого ингредиента нет!");
+            throw new IngredientException();
         }
     }
 }
