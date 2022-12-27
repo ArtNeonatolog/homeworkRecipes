@@ -4,12 +4,14 @@ import me.artsafuanov.homeworkrecipes.model.Recipe;
 import me.artsafuanov.homeworkrecipes.service.RecipeService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
-    private static final Map<Integer, Recipe> mapOfRecipes = new TreeMap<>();
+    private final Map<Integer, Recipe> mapOfRecipes = new TreeMap<>();
 
     @Override
     public Recipe addRecipe(Recipe recipe) {
@@ -26,8 +28,28 @@ public class RecipeServiceImpl implements RecipeService {
         if (mapOfRecipes.containsKey(recipeId)) {
             return mapOfRecipes.get(recipeId);
         } else {
-            throw new RuntimeException("Такого ингредиента нет!");
+            throw new RecipeException();
         }
     }
+
+    @Override
+    public Recipe updateRecipe(Integer recipeId, Recipe recipe) {
+        if (mapOfRecipes.containsKey(recipeId)) {
+            return mapOfRecipes.put(recipeId, recipe);
+        } else {
+            throw new RecipeUpdateException();
+        }
+    }
+
+    @Override
+    public Recipe deleteRecipe(Integer recipeId) {
+            return mapOfRecipes.remove(recipeId);
+    }
+
+    @Override
+    public List<Recipe> getAllRecipes () {
+        return new ArrayList<>(this.mapOfRecipes.values());
+    }
 }
+
 
