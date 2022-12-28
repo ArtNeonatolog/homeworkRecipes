@@ -16,7 +16,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe addRecipe(Recipe recipe) {
         if (mapOfRecipes.containsKey(recipe.getId())) {
-            throw new RecipeException();
+            throw new RecipeException("Такой рецепт уже есть!");
         } else {
             mapOfRecipes.put(recipe.getId(), recipe);
         }
@@ -28,7 +28,7 @@ public class RecipeServiceImpl implements RecipeService {
         if (mapOfRecipes.containsKey(recipeId)) {
             return mapOfRecipes.get(recipeId);
         } else {
-            throw new RecipeException();
+            throw new RecipeException("Такого рецепта нет!");
         }
     }
 
@@ -37,7 +37,7 @@ public class RecipeServiceImpl implements RecipeService {
         if (mapOfRecipes.containsKey(recipeId)) {
             return mapOfRecipes.put(recipeId, recipe);
         } else {
-            throw new RecipeUpdateException();
+            throw new RecipeException("Невозможно обновить рецепт, так как такого рецепта нет!");
         }
     }
 

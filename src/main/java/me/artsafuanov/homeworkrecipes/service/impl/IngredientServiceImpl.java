@@ -18,7 +18,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Ingredient addIngredient(Ingredient ingredient) {
         if (mapOfIngredients.containsKey(ingredient.getId())) {
-            throw new IngredientException();
+            throw new IngredientException("Такой ингредиент уже есть!");
         } else {
             mapOfIngredients.put(ingredient.getId(), ingredient);
         }
@@ -30,7 +30,7 @@ public class IngredientServiceImpl implements IngredientService {
         if (mapOfIngredients.containsKey(ingredientId)) {
             return mapOfIngredients.get(ingredientId);
         } else {
-            throw new IngredientException();
+            throw new IngredientException("Такого ингредиента нет!");
         }
     }
 
@@ -40,7 +40,7 @@ public class IngredientServiceImpl implements IngredientService {
         if (mapOfIngredients.containsKey(ingredientId)) {
             return mapOfIngredients.put(ingredientId, ingredient);
         } else {
-            throw new IngredientUpdateException();
+            throw new IngredientException("Невозможно обновить ингредиент, так как такого ингредиента нет!");
         }
     }
 
