@@ -1,5 +1,11 @@
 package me.artsafuanov.homeworkrecipes.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class Ingredient {
     private final Integer id;
 
@@ -18,32 +24,5 @@ public class Ingredient {
         this.unit = unit;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getAmountOfIngredients() {
-        return amountOfIngredients;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAmountOfIngredients(int amountOfIngredients) {
-        this.amountOfIngredients = amountOfIngredients;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
 }
+
