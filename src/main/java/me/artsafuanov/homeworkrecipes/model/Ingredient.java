@@ -2,12 +2,13 @@ package me.artsafuanov.homeworkrecipes.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Ingredient {
-    private final Integer id;
+    private Integer id;
 
     private static int counter = 0;
 
@@ -17,12 +18,6 @@ public class Ingredient {
 
     private String unit;  //единица измерения
 
-    public Ingredient(String name, int amountOfIngredients, String unit) {
-        this.id = counter++;
-        this.name = name;
-        this.amountOfIngredients = amountOfIngredients;
-        this.unit = unit;
-    }
 
 }
 

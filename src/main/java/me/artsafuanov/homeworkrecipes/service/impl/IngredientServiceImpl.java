@@ -1,10 +1,13 @@
 package me.artsafuanov.homeworkrecipes.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import me.artsafuanov.homeworkrecipes.model.Ingredient;
-import me.artsafuanov.homeworkrecipes.model.Recipe;
 import me.artsafuanov.homeworkrecipes.service.IngredientService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +15,18 @@ import java.util.TreeMap;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
-    private final Map<Integer, Ingredient> mapOfIngredients = new TreeMap<>();
+    private Map<Integer, Ingredient> mapOfIngredients = new TreeMap<>();
+
+    private final FileIngredientServiceImpl fileIngredientService;
+
+    public IngredientServiceImpl(FileIngredientServiceImpl fileIngredientService) {
+        this.fileIngredientService = fileIngredientService;
+    }
+
+    @PostConstruct
+    private void init () {
+        readFromFile();
+    }
 
 
     @Override
@@ -21,6 +35,7 @@ public class IngredientServiceImpl implements IngredientService {
             throw new IngredientException("Такой ингредиент уже есть!");
         } else {
             mapOfIngredients.put(ingredient.getId(), ingredient);
+            saveToFile();
         }
         return ingredient;
     }
@@ -36,9 +51,10 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient updateIngredient(Integer ingredientId, Ingredient ingredient) {
-
         if (mapOfIngredients.containsKey(ingredientId)) {
-            return mapOfIngredients.put(ingredientId, ingredient);
+            mapOfIngredients.put(ingredientId, ingredient);
+            saveToFile();
+            return ingredient;
         } else {
             throw new IngredientException("Невозможно обновить ингредиент, так как такого ингредиента нет!");
         }
@@ -52,6 +68,25 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public List<Ingredient> getAllIngredients() {
         return new ArrayList<>(mapOfIngredients.values());
+    }
+
+    private void saveToFile () {
+        try {
+            String json = new ObjectMapper().writeValueAsString(mapOfIngredients);
+            fileIngredientService.saveToFile(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void readFromFile () {
+        try {
+            String json = fileIngredientService.readFromFile();
+            mapOfIngredients = new ObjectMapper().readValue(json, new TypeReference<TreeMap <Integer, Ingredient>> (){
+            });
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
