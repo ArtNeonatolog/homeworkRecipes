@@ -8,6 +8,7 @@ import me.artsafuanov.homeworkrecipes.service.IngredientService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +89,7 @@ public class IngredientServiceImpl implements IngredientService {
             throw new RuntimeException(e);
         }
     }
+
 }
 
 

@@ -4,6 +4,7 @@ import me.artsafuanov.homeworkrecipes.service.FileIngredientService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,7 +40,8 @@ public class FileIngredientServiceImpl implements FileIngredientService {
 
     }
 
-    private boolean cleanIngredientFile () {
+    @Override
+    public boolean cleanIngredientFile () {
         try {
             Path path = Path.of(ingredientFilePath, ingredientFileName);
             Files.deleteIfExists(path);
@@ -50,5 +52,10 @@ public class FileIngredientServiceImpl implements FileIngredientService {
             return false;
         }
 
+    }
+
+    @Override
+    public File getINgredientFile () {
+        return new File(ingredientFilePath + "/" + ingredientFileName);
     }
 }
