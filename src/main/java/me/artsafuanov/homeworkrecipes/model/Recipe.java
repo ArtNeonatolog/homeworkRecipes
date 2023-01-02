@@ -13,11 +13,9 @@ public class Recipe {
 
     private Integer id;
 
-    private static int counter = 0;
-
     private String name;
 
-    private int timeForCook;  //время в минутах
+    private Integer timeForCook;  //время в минутах
 
     private List<Ingredient> ingredients;
 

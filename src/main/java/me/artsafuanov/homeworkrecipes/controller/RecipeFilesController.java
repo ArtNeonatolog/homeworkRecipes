@@ -35,10 +35,9 @@ public class RecipeFilesController {
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).contentLength(file.length())
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"RecipeFileLog.json\"")
                     .body(inputStreamResource);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+        } throw new FileNotFoundException();
     }
+
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Загрузка файла рецептов",

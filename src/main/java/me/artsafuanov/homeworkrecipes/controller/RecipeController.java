@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import me.artsafuanov.homeworkrecipes.model.Recipe;
 import me.artsafuanov.homeworkrecipes.service.RecipeService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -58,7 +57,6 @@ public class RecipeController {
             summary = "Создание рецепта",
             description = "При помощи данного метода можно создать новый рецепт")
     public Recipe addRecipe(@RequestBody Recipe recipe) {
-
         return recipeService.addRecipe(recipe);
     }
 

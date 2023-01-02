@@ -33,13 +33,12 @@ public class FileRecipeServiceImpl implements FileRecipeService {
 
     @Override
     public String readFromFile() {
-        try {
-            return Files.readString(Path.of(recipeFilePath, recipeFileName));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            try {
+                return Files.readString(Path.of(recipeFilePath, recipeFileName));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-
-    }
 
     @Override
     public boolean cleanRecipeFile () {
