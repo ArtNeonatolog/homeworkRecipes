@@ -5,12 +5,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.artsafuanov.homeworkrecipes.model.Ingredient;
 import me.artsafuanov.homeworkrecipes.model.Recipe;
+import me.artsafuanov.homeworkrecipes.service.FileRecipeService;
 import me.artsafuanov.homeworkrecipes.service.RecipeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 @Service
@@ -26,7 +29,7 @@ public class RecipeServiceImpl implements RecipeService {
     @PostConstruct
     private void init() {
         try {
-            readFromFile();
+            fileRecipeService.readFromFile();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,17 +80,7 @@ public class RecipeServiceImpl implements RecipeService {
                 String json = new ObjectMapper().writeValueAsString(mapOfRecipes);
                 fileRecipeService.saveToFile(json);
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        private void readFromFile () {
-            try {
-                String json = fileRecipeService.readFromFile();
-                mapOfRecipes = new ObjectMapper().readValue(json, new TypeReference<TreeMap<Integer, Recipe>>(){
-                });
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                throw new RecipeException("Файл с рецептами не удалось сохранить!");
             }
         }
     }

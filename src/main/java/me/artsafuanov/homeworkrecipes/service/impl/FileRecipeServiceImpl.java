@@ -33,14 +33,16 @@ public class FileRecipeServiceImpl implements FileRecipeService {
 
     @Override
     public String readFromFile() {
-            try {
+        try {
+            if (Files.exists(Path.of(recipeFilePath, recipeFileName))) {
                 return Files.readString(Path.of(recipeFilePath, recipeFileName));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
-        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } return "Файла нет";
+    }
 
-    @Override
+                            @Override
     public boolean cleanRecipeFile () {
         try {
             Path path = Path.of(recipeFilePath, recipeFileName);

@@ -33,11 +33,12 @@ public class FileIngredientServiceImpl implements FileIngredientService {
     @Override
     public String readFromFile () {
         try {
-            return Files.readString(Path.of(ingredientFilePath, ingredientFileName));
+            if (Files.exists(Path.of(ingredientFilePath, ingredientFileName))) {
+                return Files.readString(Path.of(ingredientFilePath, ingredientFileName));
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+            e.printStackTrace();
+        } return "Файла нет";
     }
 
     @Override
