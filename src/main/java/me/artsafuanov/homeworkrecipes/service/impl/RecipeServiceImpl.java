@@ -39,11 +39,10 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe addRecipe(Recipe recipe) {
+    public Integer addRecipe(Recipe recipe) {
             mapOfRecipes.put(lastId, recipe);
             saveToFile();
-            lastId++;
-        return recipe;
+        return lastId++;
     }
 
     @Override
@@ -77,24 +76,12 @@ public class RecipeServiceImpl implements RecipeService {
 
         private void saveToFile () {
             try {
-                DataFile dataFile = new DataFile(lastId, mapOfRecipes);
+                DataFile dataFile = new DataFile(lastId + 1, mapOfRecipes);
                 String json = new ObjectMapper().writeValueAsString(dataFile);
                 fileRecipeService.saveToFile(json);
             } catch (JsonProcessingException e) {
                 throw new RecipeException("Файл с рецептами не удалось сохранить!");
             }
-        }
-
-        private void readToFile () {
-        try {
-            String json = fileRecipeService.readFromFile();
-            DataFile dataFile = new ObjectMapper().readValue(json, new TypeReference<DataFile>() {
-            });
-            lastId = dataFile.getId();
-            mapOfRecipes = dataFile.getRecipes();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
         }
 
         @Override

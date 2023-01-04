@@ -61,7 +61,7 @@ public class RecipeController {
     @Operation(
             summary = "Создание рецепта",
             description = "При помощи данного метода можно создать новый рецепт")
-    public Recipe addRecipe(@RequestBody Recipe recipe) {
+    public Integer addRecipe(@RequestBody Recipe recipe) {
         return recipeService.addRecipe(recipe);
     }
 

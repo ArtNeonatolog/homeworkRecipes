@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface RecipeService {
-    Recipe addRecipe (Recipe recipe);
+    Integer addRecipe (Recipe recipe);
     Recipe getRecipe (Integer recipeId);
 
     Recipe updateRecipe (Integer recipeId, Recipe recipe);
