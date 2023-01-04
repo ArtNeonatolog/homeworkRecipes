@@ -35,7 +35,7 @@ public class RecipeFilesController {
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).contentLength(file.length())
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"RecipeFileLog.json\"")
                     .body(inputStreamResource);
-        } throw new FileNotFoundException();
+        } return ResponseEntity.noContent().build();
     }
 
 

@@ -3,6 +3,8 @@ package me.artsafuanov.homeworkrecipes.service;
 import me.artsafuanov.homeworkrecipes.model.Recipe;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Service
@@ -16,4 +18,5 @@ public interface RecipeService {
 
     List<Recipe> getAllRecipes ();
 
+    void addRecipesFromInputStream (InputStream inputStream) throws IOException;
 }

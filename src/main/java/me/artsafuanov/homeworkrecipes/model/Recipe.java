@@ -11,8 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Recipe {
 
-    private Integer id;
-
     private String name;
 
     private Integer timeForCook;  //время в минутах

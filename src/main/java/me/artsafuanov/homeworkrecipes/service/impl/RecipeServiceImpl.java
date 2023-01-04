@@ -1,24 +1,27 @@
 package me.artsafuanov.homeworkrecipes.service.impl;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import me.artsafuanov.homeworkrecipes.model.Ingredient;
 import me.artsafuanov.homeworkrecipes.model.Recipe;
-import me.artsafuanov.homeworkrecipes.service.FileRecipeService;
 import me.artsafuanov.homeworkrecipes.service.RecipeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
     private Map<Integer, Recipe> mapOfRecipes = new TreeMap<>();
+
+    private static Integer lastId = 0;
 
     private final FileRecipeServiceImpl fileRecipeService;
 
@@ -37,12 +40,9 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe addRecipe(Recipe recipe) {
-        if (mapOfRecipes.containsKey(recipe.getId())) {
-            throw new RecipeException("Такой рецепт уже есть!");
-        } else {
-            mapOfRecipes.put(recipe.getId(), recipe);
+            mapOfRecipes.put(lastId, recipe);
             saveToFile();
-        }
+            lastId++;
         return recipe;
     }
 
@@ -77,12 +77,46 @@ public class RecipeServiceImpl implements RecipeService {
 
         private void saveToFile () {
             try {
-                String json = new ObjectMapper().writeValueAsString(mapOfRecipes);
+                DataFile dataFile = new DataFile(lastId, mapOfRecipes);
+                String json = new ObjectMapper().writeValueAsString(dataFile);
                 fileRecipeService.saveToFile(json);
             } catch (JsonProcessingException e) {
                 throw new RecipeException("Файл с рецептами не удалось сохранить!");
             }
         }
+
+        private void readToFile () {
+        try {
+            String json = fileRecipeService.readFromFile();
+            DataFile dataFile = new ObjectMapper().readValue(json, new TypeReference<DataFile>() {
+            });
+            lastId = dataFile.getId();
+            mapOfRecipes = dataFile.getRecipes();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        }
+
+        @Override
+    public void addRecipesFromInputStream(InputStream inputStream) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] array = StringUtils.split(line, '|');
+               Recipe recipe = new Recipe(String.valueOf(array[0]), Integer.valueOf(array[1]), List.of(new Ingredient(Integer.valueOf(array[3]), String.valueOf(array[4]), Integer.valueOf(array[5]), String.valueOf(array[6]))), List.of(String.valueOf(array[7])));
+                addRecipe(recipe);
+            }
+        }
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class DataFile {
+        private Integer id;
+        private Map<Integer, Recipe> recipes;
+    }
+
+}
 
 

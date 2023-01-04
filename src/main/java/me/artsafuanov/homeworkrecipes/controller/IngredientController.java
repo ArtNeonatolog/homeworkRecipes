@@ -1,5 +1,4 @@
 package me.artsafuanov.homeworkrecipes.controller;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -8,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.artsafuanov.homeworkrecipes.model.Ingredient;
-import me.artsafuanov.homeworkrecipes.model.Recipe;
 import me.artsafuanov.homeworkrecipes.service.IngredientService;
 import org.springframework.web.bind.annotation.*;
 
