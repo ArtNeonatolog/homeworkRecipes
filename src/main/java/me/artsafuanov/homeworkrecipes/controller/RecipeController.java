@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.artsafuanov.homeworkrecipes.model.Recipe;
 import me.artsafuanov.homeworkrecipes.service.RecipeService;
-import me.artsafuanov.homeworkrecipes.service.impl.Recipe500Exception;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,12 +85,14 @@ public class RecipeController {
     @Operation(
             summary = "Добавление рецептов",
             description = "При помощи данного метода можно добавлять рецепты в файл")
-    public Recipe addRecipesFromFile (@RequestParam MultipartFile file) {
+    public ResponseEntity<Object> addRecipesFromFile (@RequestParam MultipartFile file) {
           try(InputStream inputStream = file.getInputStream()) {
                   recipeService.addRecipesFromInputStream(inputStream);
+                  return ResponseEntity.ok().build();
               } catch (IOException e) {
                   e.printStackTrace();
-              } throw new Recipe500Exception("Файл с рецептами не удалось загрузить!");
+                  return ResponseEntity.internalServerError().body(e.toString());
+              }
           }
     }
 

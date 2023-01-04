@@ -90,7 +90,7 @@ public class RecipeServiceImpl implements RecipeService {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] array = StringUtils.split(line, '|');
-               Recipe recipe = new Recipe(String.valueOf(array[0]), Integer.valueOf(array[1]), List.of(new Ingredient(Integer.valueOf(array[3]), String.valueOf(array[4]), Integer.valueOf(array[5]), String.valueOf(array[6]))), List.of(String.valueOf(array[7])));
+               Recipe recipe = new Recipe(String.valueOf(array[0]), Integer.valueOf(array[1]), List.of(new Ingredient(String.valueOf(array[2]), Integer.valueOf(array[3]), String.valueOf(array[4]))), List.of(String.valueOf(array[5])));
                 addRecipe(recipe);
             }
         }
