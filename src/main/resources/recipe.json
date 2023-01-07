@@ -1,1 +1,1 @@
-{"0":{"id":0,"name":"оливье","timeForCook":20,"ingredients":[{"id":0,"name":"ветчина","amountOfIngredients":100,"unit":"г."},{"id":1,"name":"картофель","amountOfIngredients":200,"unit":"г."}],"stepsForCook":["порезать мелкими кусочками","смешать"]}}
+{"id":1,"recipes":{"0":{"name":"Винегрет","timeForCook":20,"ingredients":[{"name":"Картофель","amountOfIngredients":200,"unit":"г."}],"stepsForCook":["перемешать, нарезать, отварить"]}}}

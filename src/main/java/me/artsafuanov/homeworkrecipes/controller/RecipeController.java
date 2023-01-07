@@ -1,5 +1,4 @@
 package me.artsafuanov.homeworkrecipes.controller;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,8 +8,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.artsafuanov.homeworkrecipes.model.Recipe;
 import me.artsafuanov.homeworkrecipes.service.RecipeService;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -57,8 +61,7 @@ public class RecipeController {
     @Operation(
             summary = "Создание рецепта",
             description = "При помощи данного метода можно создать новый рецепт")
-    public Recipe addRecipe(@RequestBody Recipe recipe) {
-
+    public Integer addRecipe(@RequestBody Recipe recipe) {
         return recipeService.addRecipe(recipe);
     }
 
@@ -78,5 +81,19 @@ public class RecipeController {
         return recipeService.deleteRecipe(recipeId);
     }
 
-}
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(
+            summary = "Добавление рецептов",
+            description = "При помощи данного метода можно добавлять рецепты в файл")
+    public ResponseEntity<Object> addRecipesFromFile (@RequestParam MultipartFile file) {
+          try(InputStream inputStream = file.getInputStream()) {
+                  recipeService.addRecipesFromInputStream(inputStream);
+                  return ResponseEntity.ok().build();
+              } catch (IOException e) {
+                  e.printStackTrace();
+                  return ResponseEntity.internalServerError().body(e.toString());
+              }
+          }
+    }
+
 
